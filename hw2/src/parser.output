@@ -1,0 +1,2367 @@
+文法
+
+    0 $accept: program $end
+
+    1 program: ID SEMI global_decl_block function_block compound_statement END
+
+    2 global_decl_block: ε
+    3                  | global_decl_block declaration
+
+    4 function_block: ε
+    5               | function_block function
+
+    6 function: function_header SEMI
+    7         | function_header compound_statement END
+
+    8 function_header: ID LPAREN opt_formal_args RPAREN opt_return
+
+    9 opt_formal_args: ε
+   10                | formal_arg_list
+
+   11 formal_arg_list: formal_argument
+   12                | formal_arg_list SEMI formal_argument
+
+   13 formal_argument: identifier_list COLON type
+
+   14 opt_return: ε
+   15           | COLON scalar_type
+
+   16 statement: assignment
+   17          | print_statement
+   18          | read_statement
+   19          | return_statement
+   20          | function_call SEMI
+   21          | conditional_statement
+   22          | while_statement
+   23          | for_statement
+   24          | compound_statement
+
+   25 print_statement: PRINT expression SEMI
+
+   26 read_statement: READ variable_reference SEMI
+
+   27 return_statement: RETURN expression SEMI
+
+   28 conditional_statement: IF expression THEN compound_statement ELSE compound_statement END IF
+   29                      | IF expression THEN compound_statement END IF
+
+   30 while_statement: WHILE expression DO compound_statement END DO
+
+   31 for_statement: FOR ID ASSIGN INTEGER_LITERAL TO INTEGER_LITERAL DO compound_statement END DO
+
+   32 compound_statement: BEGIN_T declaration_block statement_block END
+
+   33 declaration_block: ε
+   34                  | declaration_block declaration
+
+   35 declaration: VAR identifier_list COLON type SEMI
+   36            | VAR identifier_list COLON const_value SEMI
+
+   37 identifier_list: ID
+   38                | identifier_list COMMA ID
+
+   39 type: scalar_type
+   40     | array_type
+
+   41 scalar_type: INTEGER_T
+   42            | REAL_T
+   43            | STRING_T
+   44            | BOOLEAN_T
+
+   45 array_type: ARRAY INTEGER_LITERAL OF type
+
+   46 const_value: INTEGER_LITERAL
+   47            | REAL_LITERAL
+   48            | STRING_LITERAL
+   49            | BOOLEAN_LITERAL
+
+   50 statement_block: ε
+   51                | statement_block statement
+
+   52 assignment: variable_reference ASSIGN expression SEMI
+
+   53 variable_reference: ID
+   54                   | variable_reference LBRACK expression RBRACK
+
+   55 function_call: ID LPAREN argument_list RPAREN
+
+   56 argument_list: ε
+   57              | expr_list
+
+   58 expr_list: expression
+   59          | expr_list COMMA expression
+
+   60 expression: primary
+   61           | expression PLUS expression
+   62           | expression MINUS expression
+   63           | expression STAR expression
+   64           | expression SLASH expression
+   65           | expression MOD_T expression
+   66           | expression LT expression
+   67           | expression LE expression
+   68           | expression NE expression
+   69           | expression GE expression
+   70           | expression GT expression
+   71           | expression EQ expression
+   72           | expression AND expression
+   73           | expression OR expression
+   74           | MINUS expression
+   75           | NOT_T expression
+   76           | LPAREN expression RPAREN
+
+   77 primary: literal_constant
+   78        | variable_reference
+   79        | function_call
+
+   80 literal_constant: INTEGER_LITERAL
+   81                 | REAL_LITERAL
+   82                 | STRING_LITERAL
+   83                 | BOOLEAN_LITERAL
+
+
+終結語詞，附有它們出現處的規則
+
+    $end (0) 0
+    error (256)
+    ID (258) 1 8 31 37 38 53 55
+    INTEGER_LITERAL (259) 31 45 46 80
+    REAL_LITERAL (260) 47 81
+    STRING_LITERAL (261) 48 82
+    BOOLEAN_LITERAL (262) 49 83
+    ASSIGN (263) 31 52
+    COMMA (264) 38 59
+    COLON (265) 13 15 35 36
+    SEMI (266) 1 6 12 20 25 26 27 35 36 52
+    LPAREN (267) 8 55 76
+    RPAREN (268) 8 55 76
+    LBRACK (269) 54
+    RBRACK (270) 54
+    LT (271) 66
+    LE (272) 67
+    NE (273) 68
+    GE (274) 69
+    GT (275) 70
+    EQ (276) 71
+    PLUS (277) 61
+    MINUS (278) 62 74
+    STAR (279) 63
+    SLASH (280) 64
+    MOD_T (281) 65
+    AND (282) 72
+    OR (283) 73
+    NOT_T (284) 75
+    VAR (285) 35 36
+    ARRAY (286) 45
+    OF (287) 45
+    BOOLEAN_T (288) 44
+    INTEGER_T (289) 41
+    REAL_T (290) 42
+    STRING_T (291) 43
+    WHILE (292) 30
+    DO (293) 30 31
+    IF (294) 28 29
+    THEN (295) 28 29
+    ELSE (296) 28
+    FOR (297) 31
+    TO (298) 31
+    BEGIN_T (299) 32
+    END (300) 1 7 28 29 30 31 32
+    PRINT (301) 25
+    READ (302) 26
+    RETURN (303) 27
+    UMINUS (304)
+
+
+非終結語詞，附有它們出現處的規則
+
+    $accept (50)
+        於左側： 0
+    program (51)
+        於左側： 1
+        於右側： 0
+    global_decl_block (52)
+        於左側： 2 3
+        於右側： 1 3
+    function_block (53)
+        於左側： 4 5
+        於右側： 1 5
+    function (54)
+        於左側： 6 7
+        於右側： 5
+    function_header (55)
+        於左側： 8
+        於右側： 6 7
+    opt_formal_args (56)
+        於左側： 9 10
+        於右側： 8
+    formal_arg_list (57)
+        於左側： 11 12
+        於右側： 10 12
+    formal_argument (58)
+        於左側： 13
+        於右側： 11 12
+    opt_return (59)
+        於左側： 14 15
+        於右側： 8
+    statement (60)
+        於左側： 16 17 18 19 20 21 22 23 24
+        於右側： 51
+    print_statement (61)
+        於左側： 25
+        於右側： 17
+    read_statement (62)
+        於左側： 26
+        於右側： 18
+    return_statement (63)
+        於左側： 27
+        於右側： 19
+    conditional_statement (64)
+        於左側： 28 29
+        於右側： 21
+    while_statement (65)
+        於左側： 30
+        於右側： 22
+    for_statement (66)
+        於左側： 31
+        於右側： 23
+    compound_statement (67)
+        於左側： 32
+        於右側： 1 7 24 28 29 30 31
+    declaration_block (68)
+        於左側： 33 34
+        於右側： 32 34
+    declaration (69)
+        於左側： 35 36
+        於右側： 3 34
+    identifier_list (70)
+        於左側： 37 38
+        於右側： 13 35 36 38
+    type (71)
+        於左側： 39 40
+        於右側： 13 35 45
+    scalar_type (72)
+        於左側： 41 42 43 44
+        於右側： 15 39
+    array_type (73)
+        於左側： 45
+        於右側： 40
+    const_value (74)
+        於左側： 46 47 48 49
+        於右側： 36
+    statement_block (75)
+        於左側： 50 51
+        於右側： 32 51
+    assignment (76)
+        於左側： 52
+        於右側： 16
+    variable_reference (77)
+        於左側： 53 54
+        於右側： 26 52 54 78
+    function_call (78)
+        於左側： 55
+        於右側： 20 79
+    argument_list (79)
+        於左側： 56 57
+        於右側： 55
+    expr_list (80)
+        於左側： 58 59
+        於右側： 57 59
+    expression (81)
+        於左側： 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76
+        於右側： 25 27 28 29 30 52 54 58 59 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76
+    primary (82)
+        於左側： 77 78 79
+        於右側： 60
+    literal_constant (83)
+        於左側： 80 81 82 83
+        於右側： 77
+
+
+狀態 0
+
+    0 $accept: • program $end
+
+    ID  偏移，並進入狀態 1
+
+    program  進入狀態 2
+
+
+狀態 1
+
+    1 program: ID • SEMI global_decl_block function_block compound_statement END
+
+    SEMI  偏移，並進入狀態 3
+
+
+狀態 2
+
+    0 $accept: program • $end
+
+    $end  偏移，並進入狀態 4
+
+
+狀態 3
+
+    1 program: ID SEMI • global_decl_block function_block compound_statement END
+
+    $default  使用規則 2 以縮減 (global_decl_block)
+
+    global_decl_block  進入狀態 5
+
+
+狀態 4
+
+    0 $accept: program $end •
+
+    $default  接受
+
+
+狀態 5
+
+    1 program: ID SEMI global_decl_block • function_block compound_statement END
+    3 global_decl_block: global_decl_block • declaration
+
+    VAR  偏移，並進入狀態 6
+
+    $default  使用規則 4 以縮減 (function_block)
+
+    function_block  進入狀態 7
+    declaration     進入狀態 8
+
+
+狀態 6
+
+   35 declaration: VAR • identifier_list COLON type SEMI
+   36            | VAR • identifier_list COLON const_value SEMI
+
+    ID  偏移，並進入狀態 9
+
+    identifier_list  進入狀態 10
+
+
+狀態 7
+
+    1 program: ID SEMI global_decl_block function_block • compound_statement END
+    5 function_block: function_block • function
+
+    ID       偏移，並進入狀態 11
+    BEGIN_T  偏移，並進入狀態 12
+
+    function            進入狀態 13
+    function_header     進入狀態 14
+    compound_statement  進入狀態 15
+
+
+狀態 8
+
+    3 global_decl_block: global_decl_block declaration •
+
+    $default  使用規則 3 以縮減 (global_decl_block)
+
+
+狀態 9
+
+   37 identifier_list: ID •
+
+    $default  使用規則 37 以縮減 (identifier_list)
+
+
+狀態 10
+
+   35 declaration: VAR identifier_list • COLON type SEMI
+   36            | VAR identifier_list • COLON const_value SEMI
+   38 identifier_list: identifier_list • COMMA ID
+
+    COMMA  偏移，並進入狀態 16
+    COLON  偏移，並進入狀態 17
+
+
+狀態 11
+
+    8 function_header: ID • LPAREN opt_formal_args RPAREN opt_return
+
+    LPAREN  偏移，並進入狀態 18
+
+
+狀態 12
+
+   32 compound_statement: BEGIN_T • declaration_block statement_block END
+
+    $default  使用規則 33 以縮減 (declaration_block)
+
+    declaration_block  進入狀態 19
+
+
+狀態 13
+
+    5 function_block: function_block function •
+
+    $default  使用規則 5 以縮減 (function_block)
+
+
+狀態 14
+
+    6 function: function_header • SEMI
+    7         | function_header • compound_statement END
+
+    SEMI     偏移，並進入狀態 20
+    BEGIN_T  偏移，並進入狀態 12
+
+    compound_statement  進入狀態 21
+
+
+狀態 15
+
+    1 program: ID SEMI global_decl_block function_block compound_statement • END
+
+    END  偏移，並進入狀態 22
+
+
+狀態 16
+
+   38 identifier_list: identifier_list COMMA • ID
+
+    ID  偏移，並進入狀態 23
+
+
+狀態 17
+
+   35 declaration: VAR identifier_list COLON • type SEMI
+   36            | VAR identifier_list COLON • const_value SEMI
+
+    INTEGER_LITERAL  偏移，並進入狀態 24
+    REAL_LITERAL     偏移，並進入狀態 25
+    STRING_LITERAL   偏移，並進入狀態 26
+    BOOLEAN_LITERAL  偏移，並進入狀態 27
+    ARRAY            偏移，並進入狀態 28
+    BOOLEAN_T        偏移，並進入狀態 29
+    INTEGER_T        偏移，並進入狀態 30
+    REAL_T           偏移，並進入狀態 31
+    STRING_T         偏移，並進入狀態 32
+
+    type         進入狀態 33
+    scalar_type  進入狀態 34
+    array_type   進入狀態 35
+    const_value  進入狀態 36
+
+
+狀態 18
+
+    8 function_header: ID LPAREN • opt_formal_args RPAREN opt_return
+
+    ID  偏移，並進入狀態 9
+
+    $default  使用規則 9 以縮減 (opt_formal_args)
+
+    opt_formal_args  進入狀態 37
+    formal_arg_list  進入狀態 38
+    formal_argument  進入狀態 39
+    identifier_list  進入狀態 40
+
+
+狀態 19
+
+   32 compound_statement: BEGIN_T declaration_block • statement_block END
+   34 declaration_block: declaration_block • declaration
+
+    VAR  偏移，並進入狀態 6
+
+    $default  使用規則 50 以縮減 (statement_block)
+
+    declaration      進入狀態 41
+    statement_block  進入狀態 42
+
+
+狀態 20
+
+    6 function: function_header SEMI •
+
+    $default  使用規則 6 以縮減 (function)
+
+
+狀態 21
+
+    7 function: function_header compound_statement • END
+
+    END  偏移，並進入狀態 43
+
+
+狀態 22
+
+    1 program: ID SEMI global_decl_block function_block compound_statement END •
+
+    $default  使用規則 1 以縮減 (program)
+
+
+狀態 23
+
+   38 identifier_list: identifier_list COMMA ID •
+
+    $default  使用規則 38 以縮減 (identifier_list)
+
+
+狀態 24
+
+   46 const_value: INTEGER_LITERAL •
+
+    $default  使用規則 46 以縮減 (const_value)
+
+
+狀態 25
+
+   47 const_value: REAL_LITERAL •
+
+    $default  使用規則 47 以縮減 (const_value)
+
+
+狀態 26
+
+   48 const_value: STRING_LITERAL •
+
+    $default  使用規則 48 以縮減 (const_value)
+
+
+狀態 27
+
+   49 const_value: BOOLEAN_LITERAL •
+
+    $default  使用規則 49 以縮減 (const_value)
+
+
+狀態 28
+
+   45 array_type: ARRAY • INTEGER_LITERAL OF type
+
+    INTEGER_LITERAL  偏移，並進入狀態 44
+
+
+狀態 29
+
+   44 scalar_type: BOOLEAN_T •
+
+    $default  使用規則 44 以縮減 (scalar_type)
+
+
+狀態 30
+
+   41 scalar_type: INTEGER_T •
+
+    $default  使用規則 41 以縮減 (scalar_type)
+
+
+狀態 31
+
+   42 scalar_type: REAL_T •
+
+    $default  使用規則 42 以縮減 (scalar_type)
+
+
+狀態 32
+
+   43 scalar_type: STRING_T •
+
+    $default  使用規則 43 以縮減 (scalar_type)
+
+
+狀態 33
+
+   35 declaration: VAR identifier_list COLON type • SEMI
+
+    SEMI  偏移，並進入狀態 45
+
+
+狀態 34
+
+   39 type: scalar_type •
+
+    $default  使用規則 39 以縮減 (type)
+
+
+狀態 35
+
+   40 type: array_type •
+
+    $default  使用規則 40 以縮減 (type)
+
+
+狀態 36
+
+   36 declaration: VAR identifier_list COLON const_value • SEMI
+
+    SEMI  偏移，並進入狀態 46
+
+
+狀態 37
+
+    8 function_header: ID LPAREN opt_formal_args • RPAREN opt_return
+
+    RPAREN  偏移，並進入狀態 47
+
+
+狀態 38
+
+   10 opt_formal_args: formal_arg_list •
+   12 formal_arg_list: formal_arg_list • SEMI formal_argument
+
+    SEMI  偏移，並進入狀態 48
+
+    $default  使用規則 10 以縮減 (opt_formal_args)
+
+
+狀態 39
+
+   11 formal_arg_list: formal_argument •
+
+    $default  使用規則 11 以縮減 (formal_arg_list)
+
+
+狀態 40
+
+   13 formal_argument: identifier_list • COLON type
+   38 identifier_list: identifier_list • COMMA ID
+
+    COMMA  偏移，並進入狀態 16
+    COLON  偏移，並進入狀態 49
+
+
+狀態 41
+
+   34 declaration_block: declaration_block declaration •
+
+    $default  使用規則 34 以縮減 (declaration_block)
+
+
+狀態 42
+
+   32 compound_statement: BEGIN_T declaration_block statement_block • END
+   51 statement_block: statement_block • statement
+
+    ID       偏移，並進入狀態 50
+    WHILE    偏移，並進入狀態 51
+    IF       偏移，並進入狀態 52
+    FOR      偏移，並進入狀態 53
+    BEGIN_T  偏移，並進入狀態 12
+    END      偏移，並進入狀態 54
+    PRINT    偏移，並進入狀態 55
+    READ     偏移，並進入狀態 56
+    RETURN   偏移，並進入狀態 57
+
+    statement              進入狀態 58
+    print_statement        進入狀態 59
+    read_statement         進入狀態 60
+    return_statement       進入狀態 61
+    conditional_statement  進入狀態 62
+    while_statement        進入狀態 63
+    for_statement          進入狀態 64
+    compound_statement     進入狀態 65
+    assignment             進入狀態 66
+    variable_reference     進入狀態 67
+    function_call          進入狀態 68
+
+
+狀態 43
+
+    7 function: function_header compound_statement END •
+
+    $default  使用規則 7 以縮減 (function)
+
+
+狀態 44
+
+   45 array_type: ARRAY INTEGER_LITERAL • OF type
+
+    OF  偏移，並進入狀態 69
+
+
+狀態 45
+
+   35 declaration: VAR identifier_list COLON type SEMI •
+
+    $default  使用規則 35 以縮減 (declaration)
+
+
+狀態 46
+
+   36 declaration: VAR identifier_list COLON const_value SEMI •
+
+    $default  使用規則 36 以縮減 (declaration)
+
+
+狀態 47
+
+    8 function_header: ID LPAREN opt_formal_args RPAREN • opt_return
+
+    COLON  偏移，並進入狀態 70
+
+    $default  使用規則 14 以縮減 (opt_return)
+
+    opt_return  進入狀態 71
+
+
+狀態 48
+
+   12 formal_arg_list: formal_arg_list SEMI • formal_argument
+
+    ID  偏移，並進入狀態 9
+
+    formal_argument  進入狀態 72
+    identifier_list  進入狀態 40
+
+
+狀態 49
+
+   13 formal_argument: identifier_list COLON • type
+
+    ARRAY      偏移，並進入狀態 28
+    BOOLEAN_T  偏移，並進入狀態 29
+    INTEGER_T  偏移，並進入狀態 30
+    REAL_T     偏移，並進入狀態 31
+    STRING_T   偏移，並進入狀態 32
+
+    type         進入狀態 73
+    scalar_type  進入狀態 34
+    array_type   進入狀態 35
+
+
+狀態 50
+
+   53 variable_reference: ID •
+   55 function_call: ID • LPAREN argument_list RPAREN
+
+    LPAREN  偏移，並進入狀態 74
+
+    $default  使用規則 53 以縮減 (variable_reference)
+
+
+狀態 51
+
+   30 while_statement: WHILE • expression DO compound_statement END DO
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 84
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 52
+
+   28 conditional_statement: IF • expression THEN compound_statement ELSE compound_statement END IF
+   29                      | IF • expression THEN compound_statement END IF
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 87
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 53
+
+   31 for_statement: FOR • ID ASSIGN INTEGER_LITERAL TO INTEGER_LITERAL DO compound_statement END DO
+
+    ID  偏移，並進入狀態 88
+
+
+狀態 54
+
+   32 compound_statement: BEGIN_T declaration_block statement_block END •
+
+    $default  使用規則 32 以縮減 (compound_statement)
+
+
+狀態 55
+
+   25 print_statement: PRINT • expression SEMI
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 89
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 56
+
+   26 read_statement: READ • variable_reference SEMI
+
+    ID  偏移，並進入狀態 90
+
+    variable_reference  進入狀態 91
+
+
+狀態 57
+
+   27 return_statement: RETURN • expression SEMI
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 92
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 58
+
+   51 statement_block: statement_block statement •
+
+    $default  使用規則 51 以縮減 (statement_block)
+
+
+狀態 59
+
+   17 statement: print_statement •
+
+    $default  使用規則 17 以縮減 (statement)
+
+
+狀態 60
+
+   18 statement: read_statement •
+
+    $default  使用規則 18 以縮減 (statement)
+
+
+狀態 61
+
+   19 statement: return_statement •
+
+    $default  使用規則 19 以縮減 (statement)
+
+
+狀態 62
+
+   21 statement: conditional_statement •
+
+    $default  使用規則 21 以縮減 (statement)
+
+
+狀態 63
+
+   22 statement: while_statement •
+
+    $default  使用規則 22 以縮減 (statement)
+
+
+狀態 64
+
+   23 statement: for_statement •
+
+    $default  使用規則 23 以縮減 (statement)
+
+
+狀態 65
+
+   24 statement: compound_statement •
+
+    $default  使用規則 24 以縮減 (statement)
+
+
+狀態 66
+
+   16 statement: assignment •
+
+    $default  使用規則 16 以縮減 (statement)
+
+
+狀態 67
+
+   52 assignment: variable_reference • ASSIGN expression SEMI
+   54 variable_reference: variable_reference • LBRACK expression RBRACK
+
+    ASSIGN  偏移，並進入狀態 93
+    LBRACK  偏移，並進入狀態 94
+
+
+狀態 68
+
+   20 statement: function_call • SEMI
+
+    SEMI  偏移，並進入狀態 95
+
+
+狀態 69
+
+   45 array_type: ARRAY INTEGER_LITERAL OF • type
+
+    ARRAY      偏移，並進入狀態 28
+    BOOLEAN_T  偏移，並進入狀態 29
+    INTEGER_T  偏移，並進入狀態 30
+    REAL_T     偏移，並進入狀態 31
+    STRING_T   偏移，並進入狀態 32
+
+    type         進入狀態 96
+    scalar_type  進入狀態 34
+    array_type   進入狀態 35
+
+
+狀態 70
+
+   15 opt_return: COLON • scalar_type
+
+    BOOLEAN_T  偏移，並進入狀態 29
+    INTEGER_T  偏移，並進入狀態 30
+    REAL_T     偏移，並進入狀態 31
+    STRING_T   偏移，並進入狀態 32
+
+    scalar_type  進入狀態 97
+
+
+狀態 71
+
+    8 function_header: ID LPAREN opt_formal_args RPAREN opt_return •
+
+    $default  使用規則 8 以縮減 (function_header)
+
+
+狀態 72
+
+   12 formal_arg_list: formal_arg_list SEMI formal_argument •
+
+    $default  使用規則 12 以縮減 (formal_arg_list)
+
+
+狀態 73
+
+   13 formal_argument: identifier_list COLON type •
+
+    $default  使用規則 13 以縮減 (formal_argument)
+
+
+狀態 74
+
+   55 function_call: ID LPAREN • argument_list RPAREN
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    $default  使用規則 56 以縮減 (argument_list)
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    argument_list       進入狀態 98
+    expr_list           進入狀態 99
+    expression          進入狀態 100
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 75
+
+   80 literal_constant: INTEGER_LITERAL •
+
+    $default  使用規則 80 以縮減 (literal_constant)
+
+
+狀態 76
+
+   81 literal_constant: REAL_LITERAL •
+
+    $default  使用規則 81 以縮減 (literal_constant)
+
+
+狀態 77
+
+   82 literal_constant: STRING_LITERAL •
+
+    $default  使用規則 82 以縮減 (literal_constant)
+
+
+狀態 78
+
+   83 literal_constant: BOOLEAN_LITERAL •
+
+    $default  使用規則 83 以縮減 (literal_constant)
+
+
+狀態 79
+
+   76 expression: LPAREN • expression RPAREN
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 101
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 80
+
+   74 expression: MINUS • expression
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 102
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 81
+
+   75 expression: NOT_T • expression
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 103
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 82
+
+   54 variable_reference: variable_reference • LBRACK expression RBRACK
+   78 primary: variable_reference •
+
+    LBRACK  偏移，並進入狀態 94
+
+    $default  使用規則 78 以縮減 (primary)
+
+
+狀態 83
+
+   79 primary: function_call •
+
+    $default  使用規則 79 以縮減 (primary)
+
+
+狀態 84
+
+   30 while_statement: WHILE expression • DO compound_statement END DO
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    LT     偏移，並進入狀態 104
+    LE     偏移，並進入狀態 105
+    NE     偏移，並進入狀態 106
+    GE     偏移，並進入狀態 107
+    GT     偏移，並進入狀態 108
+    EQ     偏移，並進入狀態 109
+    PLUS   偏移，並進入狀態 110
+    MINUS  偏移，並進入狀態 111
+    STAR   偏移，並進入狀態 112
+    SLASH  偏移，並進入狀態 113
+    MOD_T  偏移，並進入狀態 114
+    AND    偏移，並進入狀態 115
+    OR     偏移，並進入狀態 116
+    DO     偏移，並進入狀態 117
+
+
+狀態 85
+
+   60 expression: primary •
+
+    $default  使用規則 60 以縮減 (expression)
+
+
+狀態 86
+
+   77 primary: literal_constant •
+
+    $default  使用規則 77 以縮減 (primary)
+
+
+狀態 87
+
+   28 conditional_statement: IF expression • THEN compound_statement ELSE compound_statement END IF
+   29                      | IF expression • THEN compound_statement END IF
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    LT     偏移，並進入狀態 104
+    LE     偏移，並進入狀態 105
+    NE     偏移，並進入狀態 106
+    GE     偏移，並進入狀態 107
+    GT     偏移，並進入狀態 108
+    EQ     偏移，並進入狀態 109
+    PLUS   偏移，並進入狀態 110
+    MINUS  偏移，並進入狀態 111
+    STAR   偏移，並進入狀態 112
+    SLASH  偏移，並進入狀態 113
+    MOD_T  偏移，並進入狀態 114
+    AND    偏移，並進入狀態 115
+    OR     偏移，並進入狀態 116
+    THEN   偏移，並進入狀態 118
+
+
+狀態 88
+
+   31 for_statement: FOR ID • ASSIGN INTEGER_LITERAL TO INTEGER_LITERAL DO compound_statement END DO
+
+    ASSIGN  偏移，並進入狀態 119
+
+
+狀態 89
+
+   25 print_statement: PRINT expression • SEMI
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    SEMI   偏移，並進入狀態 120
+    LT     偏移，並進入狀態 104
+    LE     偏移，並進入狀態 105
+    NE     偏移，並進入狀態 106
+    GE     偏移，並進入狀態 107
+    GT     偏移，並進入狀態 108
+    EQ     偏移，並進入狀態 109
+    PLUS   偏移，並進入狀態 110
+    MINUS  偏移，並進入狀態 111
+    STAR   偏移，並進入狀態 112
+    SLASH  偏移，並進入狀態 113
+    MOD_T  偏移，並進入狀態 114
+    AND    偏移，並進入狀態 115
+    OR     偏移，並進入狀態 116
+
+
+狀態 90
+
+   53 variable_reference: ID •
+
+    $default  使用規則 53 以縮減 (variable_reference)
+
+
+狀態 91
+
+   26 read_statement: READ variable_reference • SEMI
+   54 variable_reference: variable_reference • LBRACK expression RBRACK
+
+    SEMI    偏移，並進入狀態 121
+    LBRACK  偏移，並進入狀態 94
+
+
+狀態 92
+
+   27 return_statement: RETURN expression • SEMI
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    SEMI   偏移，並進入狀態 122
+    LT     偏移，並進入狀態 104
+    LE     偏移，並進入狀態 105
+    NE     偏移，並進入狀態 106
+    GE     偏移，並進入狀態 107
+    GT     偏移，並進入狀態 108
+    EQ     偏移，並進入狀態 109
+    PLUS   偏移，並進入狀態 110
+    MINUS  偏移，並進入狀態 111
+    STAR   偏移，並進入狀態 112
+    SLASH  偏移，並進入狀態 113
+    MOD_T  偏移，並進入狀態 114
+    AND    偏移，並進入狀態 115
+    OR     偏移，並進入狀態 116
+
+
+狀態 93
+
+   52 assignment: variable_reference ASSIGN • expression SEMI
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 123
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 94
+
+   54 variable_reference: variable_reference LBRACK • expression RBRACK
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 124
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 95
+
+   20 statement: function_call SEMI •
+
+    $default  使用規則 20 以縮減 (statement)
+
+
+狀態 96
+
+   45 array_type: ARRAY INTEGER_LITERAL OF type •
+
+    $default  使用規則 45 以縮減 (array_type)
+
+
+狀態 97
+
+   15 opt_return: COLON scalar_type •
+
+    $default  使用規則 15 以縮減 (opt_return)
+
+
+狀態 98
+
+   55 function_call: ID LPAREN argument_list • RPAREN
+
+    RPAREN  偏移，並進入狀態 125
+
+
+狀態 99
+
+   57 argument_list: expr_list •
+   59 expr_list: expr_list • COMMA expression
+
+    COMMA  偏移，並進入狀態 126
+
+    $default  使用規則 57 以縮減 (argument_list)
+
+
+狀態 100
+
+   58 expr_list: expression •
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    LT     偏移，並進入狀態 104
+    LE     偏移，並進入狀態 105
+    NE     偏移，並進入狀態 106
+    GE     偏移，並進入狀態 107
+    GT     偏移，並進入狀態 108
+    EQ     偏移，並進入狀態 109
+    PLUS   偏移，並進入狀態 110
+    MINUS  偏移，並進入狀態 111
+    STAR   偏移，並進入狀態 112
+    SLASH  偏移，並進入狀態 113
+    MOD_T  偏移，並進入狀態 114
+    AND    偏移，並進入狀態 115
+    OR     偏移，並進入狀態 116
+
+    $default  使用規則 58 以縮減 (expr_list)
+
+
+狀態 101
+
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+   76           | LPAREN expression • RPAREN
+
+    RPAREN  偏移，並進入狀態 127
+    LT      偏移，並進入狀態 104
+    LE      偏移，並進入狀態 105
+    NE      偏移，並進入狀態 106
+    GE      偏移，並進入狀態 107
+    GT      偏移，並進入狀態 108
+    EQ      偏移，並進入狀態 109
+    PLUS    偏移，並進入狀態 110
+    MINUS   偏移，並進入狀態 111
+    STAR    偏移，並進入狀態 112
+    SLASH   偏移，並進入狀態 113
+    MOD_T   偏移，並進入狀態 114
+    AND     偏移，並進入狀態 115
+    OR      偏移，並進入狀態 116
+
+
+狀態 102
+
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+   74           | MINUS expression •
+
+    $default  使用規則 74 以縮減 (expression)
+
+
+狀態 103
+
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+   75           | NOT_T expression •
+
+    PLUS   偏移，並進入狀態 110
+    MINUS  偏移，並進入狀態 111
+    STAR   偏移，並進入狀態 112
+    SLASH  偏移，並進入狀態 113
+    MOD_T  偏移，並進入狀態 114
+
+    $default  使用規則 75 以縮減 (expression)
+
+
+狀態 104
+
+   66 expression: expression LT • expression
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 128
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 105
+
+   67 expression: expression LE • expression
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 129
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 106
+
+   68 expression: expression NE • expression
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 130
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 107
+
+   69 expression: expression GE • expression
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 131
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 108
+
+   70 expression: expression GT • expression
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 132
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 109
+
+   71 expression: expression EQ • expression
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 133
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 110
+
+   61 expression: expression PLUS • expression
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 134
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 111
+
+   62 expression: expression MINUS • expression
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 135
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 112
+
+   63 expression: expression STAR • expression
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 136
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 113
+
+   64 expression: expression SLASH • expression
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 137
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 114
+
+   65 expression: expression MOD_T • expression
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 138
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 115
+
+   72 expression: expression AND • expression
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 139
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 116
+
+   73 expression: expression OR • expression
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 140
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 117
+
+   30 while_statement: WHILE expression DO • compound_statement END DO
+
+    BEGIN_T  偏移，並進入狀態 12
+
+    compound_statement  進入狀態 141
+
+
+狀態 118
+
+   28 conditional_statement: IF expression THEN • compound_statement ELSE compound_statement END IF
+   29                      | IF expression THEN • compound_statement END IF
+
+    BEGIN_T  偏移，並進入狀態 12
+
+    compound_statement  進入狀態 142
+
+
+狀態 119
+
+   31 for_statement: FOR ID ASSIGN • INTEGER_LITERAL TO INTEGER_LITERAL DO compound_statement END DO
+
+    INTEGER_LITERAL  偏移，並進入狀態 143
+
+
+狀態 120
+
+   25 print_statement: PRINT expression SEMI •
+
+    $default  使用規則 25 以縮減 (print_statement)
+
+
+狀態 121
+
+   26 read_statement: READ variable_reference SEMI •
+
+    $default  使用規則 26 以縮減 (read_statement)
+
+
+狀態 122
+
+   27 return_statement: RETURN expression SEMI •
+
+    $default  使用規則 27 以縮減 (return_statement)
+
+
+狀態 123
+
+   52 assignment: variable_reference ASSIGN expression • SEMI
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    SEMI   偏移，並進入狀態 144
+    LT     偏移，並進入狀態 104
+    LE     偏移，並進入狀態 105
+    NE     偏移，並進入狀態 106
+    GE     偏移，並進入狀態 107
+    GT     偏移，並進入狀態 108
+    EQ     偏移，並進入狀態 109
+    PLUS   偏移，並進入狀態 110
+    MINUS  偏移，並進入狀態 111
+    STAR   偏移，並進入狀態 112
+    SLASH  偏移，並進入狀態 113
+    MOD_T  偏移，並進入狀態 114
+    AND    偏移，並進入狀態 115
+    OR     偏移，並進入狀態 116
+
+
+狀態 124
+
+   54 variable_reference: variable_reference LBRACK expression • RBRACK
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    RBRACK  偏移，並進入狀態 145
+    LT      偏移，並進入狀態 104
+    LE      偏移，並進入狀態 105
+    NE      偏移，並進入狀態 106
+    GE      偏移，並進入狀態 107
+    GT      偏移，並進入狀態 108
+    EQ      偏移，並進入狀態 109
+    PLUS    偏移，並進入狀態 110
+    MINUS   偏移，並進入狀態 111
+    STAR    偏移，並進入狀態 112
+    SLASH   偏移，並進入狀態 113
+    MOD_T   偏移，並進入狀態 114
+    AND     偏移，並進入狀態 115
+    OR      偏移，並進入狀態 116
+
+
+狀態 125
+
+   55 function_call: ID LPAREN argument_list RPAREN •
+
+    $default  使用規則 55 以縮減 (function_call)
+
+
+狀態 126
+
+   59 expr_list: expr_list COMMA • expression
+
+    ID               偏移，並進入狀態 50
+    INTEGER_LITERAL  偏移，並進入狀態 75
+    REAL_LITERAL     偏移，並進入狀態 76
+    STRING_LITERAL   偏移，並進入狀態 77
+    BOOLEAN_LITERAL  偏移，並進入狀態 78
+    LPAREN           偏移，並進入狀態 79
+    MINUS            偏移，並進入狀態 80
+    NOT_T            偏移，並進入狀態 81
+
+    variable_reference  進入狀態 82
+    function_call       進入狀態 83
+    expression          進入狀態 146
+    primary             進入狀態 85
+    literal_constant    進入狀態 86
+
+
+狀態 127
+
+   76 expression: LPAREN expression RPAREN •
+
+    $default  使用規則 76 以縮減 (expression)
+
+
+狀態 128
+
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   66           | expression LT expression •
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    PLUS   偏移，並進入狀態 110
+    MINUS  偏移，並進入狀態 111
+    STAR   偏移，並進入狀態 112
+    SLASH  偏移，並進入狀態 113
+    MOD_T  偏移，並進入狀態 114
+    AND    偏移，並進入狀態 115
+    OR     偏移，並進入狀態 116
+
+    $default  使用規則 66 以縮減 (expression)
+
+
+狀態 129
+
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   67           | expression LE expression •
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    PLUS   偏移，並進入狀態 110
+    MINUS  偏移，並進入狀態 111
+    STAR   偏移，並進入狀態 112
+    SLASH  偏移，並進入狀態 113
+    MOD_T  偏移，並進入狀態 114
+    AND    偏移，並進入狀態 115
+    OR     偏移，並進入狀態 116
+
+    $default  使用規則 67 以縮減 (expression)
+
+
+狀態 130
+
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   68           | expression NE expression •
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    PLUS   偏移，並進入狀態 110
+    MINUS  偏移，並進入狀態 111
+    STAR   偏移，並進入狀態 112
+    SLASH  偏移，並進入狀態 113
+    MOD_T  偏移，並進入狀態 114
+    AND    偏移，並進入狀態 115
+    OR     偏移，並進入狀態 116
+
+    $default  使用規則 68 以縮減 (expression)
+
+
+狀態 131
+
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   69           | expression GE expression •
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    PLUS   偏移，並進入狀態 110
+    MINUS  偏移，並進入狀態 111
+    STAR   偏移，並進入狀態 112
+    SLASH  偏移，並進入狀態 113
+    MOD_T  偏移，並進入狀態 114
+    AND    偏移，並進入狀態 115
+    OR     偏移，並進入狀態 116
+
+    $default  使用規則 69 以縮減 (expression)
+
+
+狀態 132
+
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   70           | expression GT expression •
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    PLUS   偏移，並進入狀態 110
+    MINUS  偏移，並進入狀態 111
+    STAR   偏移，並進入狀態 112
+    SLASH  偏移，並進入狀態 113
+    MOD_T  偏移，並進入狀態 114
+    AND    偏移，並進入狀態 115
+    OR     偏移，並進入狀態 116
+
+    $default  使用規則 70 以縮減 (expression)
+
+
+狀態 133
+
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   71           | expression EQ expression •
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    PLUS   偏移，並進入狀態 110
+    MINUS  偏移，並進入狀態 111
+    STAR   偏移，並進入狀態 112
+    SLASH  偏移，並進入狀態 113
+    MOD_T  偏移，並進入狀態 114
+    AND    偏移，並進入狀態 115
+    OR     偏移，並進入狀態 116
+
+    $default  使用規則 71 以縮減 (expression)
+
+
+狀態 134
+
+   61 expression: expression • PLUS expression
+   61           | expression PLUS expression •
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    STAR   偏移，並進入狀態 112
+    SLASH  偏移，並進入狀態 113
+    MOD_T  偏移，並進入狀態 114
+
+    $default  使用規則 61 以縮減 (expression)
+
+
+狀態 135
+
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   62           | expression MINUS expression •
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    PLUS   偏移，並進入狀態 110
+    STAR   偏移，並進入狀態 112
+    SLASH  偏移，並進入狀態 113
+    MOD_T  偏移，並進入狀態 114
+
+    $default  使用規則 62 以縮減 (expression)
+
+
+狀態 136
+
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   63           | expression STAR expression •
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    $default  使用規則 63 以縮減 (expression)
+
+
+狀態 137
+
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   64           | expression SLASH expression •
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    STAR  偏移，並進入狀態 112
+
+    $default  使用規則 64 以縮減 (expression)
+
+
+狀態 138
+
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   65           | expression MOD_T expression •
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    STAR  偏移，並進入狀態 112
+
+    $default  使用規則 65 以縮減 (expression)
+
+
+狀態 139
+
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   72           | expression AND expression •
+   73           | expression • OR expression
+
+    PLUS   偏移，並進入狀態 110
+    MINUS  偏移，並進入狀態 111
+    STAR   偏移，並進入狀態 112
+    SLASH  偏移，並進入狀態 113
+    MOD_T  偏移，並進入狀態 114
+
+    $default  使用規則 72 以縮減 (expression)
+
+
+狀態 140
+
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+   73           | expression OR expression •
+
+    PLUS   偏移，並進入狀態 110
+    MINUS  偏移，並進入狀態 111
+    STAR   偏移，並進入狀態 112
+    SLASH  偏移，並進入狀態 113
+    MOD_T  偏移，並進入狀態 114
+
+    $default  使用規則 73 以縮減 (expression)
+
+
+狀態 141
+
+   30 while_statement: WHILE expression DO compound_statement • END DO
+
+    END  偏移，並進入狀態 147
+
+
+狀態 142
+
+   28 conditional_statement: IF expression THEN compound_statement • ELSE compound_statement END IF
+   29                      | IF expression THEN compound_statement • END IF
+
+    ELSE  偏移，並進入狀態 148
+    END   偏移，並進入狀態 149
+
+
+狀態 143
+
+   31 for_statement: FOR ID ASSIGN INTEGER_LITERAL • TO INTEGER_LITERAL DO compound_statement END DO
+
+    TO  偏移，並進入狀態 150
+
+
+狀態 144
+
+   52 assignment: variable_reference ASSIGN expression SEMI •
+
+    $default  使用規則 52 以縮減 (assignment)
+
+
+狀態 145
+
+   54 variable_reference: variable_reference LBRACK expression RBRACK •
+
+    $default  使用規則 54 以縮減 (variable_reference)
+
+
+狀態 146
+
+   59 expr_list: expr_list COMMA expression •
+   61 expression: expression • PLUS expression
+   62           | expression • MINUS expression
+   63           | expression • STAR expression
+   64           | expression • SLASH expression
+   65           | expression • MOD_T expression
+   66           | expression • LT expression
+   67           | expression • LE expression
+   68           | expression • NE expression
+   69           | expression • GE expression
+   70           | expression • GT expression
+   71           | expression • EQ expression
+   72           | expression • AND expression
+   73           | expression • OR expression
+
+    LT     偏移，並進入狀態 104
+    LE     偏移，並進入狀態 105
+    NE     偏移，並進入狀態 106
+    GE     偏移，並進入狀態 107
+    GT     偏移，並進入狀態 108
+    EQ     偏移，並進入狀態 109
+    PLUS   偏移，並進入狀態 110
+    MINUS  偏移，並進入狀態 111
+    STAR   偏移，並進入狀態 112
+    SLASH  偏移，並進入狀態 113
+    MOD_T  偏移，並進入狀態 114
+    AND    偏移，並進入狀態 115
+    OR     偏移，並進入狀態 116
+
+    $default  使用規則 59 以縮減 (expr_list)
+
+
+狀態 147
+
+   30 while_statement: WHILE expression DO compound_statement END • DO
+
+    DO  偏移，並進入狀態 151
+
+
+狀態 148
+
+   28 conditional_statement: IF expression THEN compound_statement ELSE • compound_statement END IF
+
+    BEGIN_T  偏移，並進入狀態 12
+
+    compound_statement  進入狀態 152
+
+
+狀態 149
+
+   29 conditional_statement: IF expression THEN compound_statement END • IF
+
+    IF  偏移，並進入狀態 153
+
+
+狀態 150
+
+   31 for_statement: FOR ID ASSIGN INTEGER_LITERAL TO • INTEGER_LITERAL DO compound_statement END DO
+
+    INTEGER_LITERAL  偏移，並進入狀態 154
+
+
+狀態 151
+
+   30 while_statement: WHILE expression DO compound_statement END DO •
+
+    $default  使用規則 30 以縮減 (while_statement)
+
+
+狀態 152
+
+   28 conditional_statement: IF expression THEN compound_statement ELSE compound_statement • END IF
+
+    END  偏移，並進入狀態 155
+
+
+狀態 153
+
+   29 conditional_statement: IF expression THEN compound_statement END IF •
+
+    $default  使用規則 29 以縮減 (conditional_statement)
+
+
+狀態 154
+
+   31 for_statement: FOR ID ASSIGN INTEGER_LITERAL TO INTEGER_LITERAL • DO compound_statement END DO
+
+    DO  偏移，並進入狀態 156
+
+
+狀態 155
+
+   28 conditional_statement: IF expression THEN compound_statement ELSE compound_statement END • IF
+
+    IF  偏移，並進入狀態 157
+
+
+狀態 156
+
+   31 for_statement: FOR ID ASSIGN INTEGER_LITERAL TO INTEGER_LITERAL DO • compound_statement END DO
+
+    BEGIN_T  偏移，並進入狀態 12
+
+    compound_statement  進入狀態 158
+
+
+狀態 157
+
+   28 conditional_statement: IF expression THEN compound_statement ELSE compound_statement END IF •
+
+    $default  使用規則 28 以縮減 (conditional_statement)
+
+
+狀態 158
+
+   31 for_statement: FOR ID ASSIGN INTEGER_LITERAL TO INTEGER_LITERAL DO compound_statement • END DO
+
+    END  偏移，並進入狀態 159
+
+
+狀態 159
+
+   31 for_statement: FOR ID ASSIGN INTEGER_LITERAL TO INTEGER_LITERAL DO compound_statement END • DO
+
+    DO  偏移，並進入狀態 160
+
+
+狀態 160
+
+   31 for_statement: FOR ID ASSIGN INTEGER_LITERAL TO INTEGER_LITERAL DO compound_statement END DO •
+
+    $default  使用規則 31 以縮減 (for_statement)
